@@ -4,14 +4,20 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 import session from "express-session";
 import MongoStore from "connect-mongo";
+import { Database } from "./config/Database";
 import { Logger } from "./config/Logger";
-// import BlogRoutes from "./routes/BlogRoutes";
+import { BlogRoutes } from "./routes/BlogRoutes";
 import { AuthRoutes } from "./routes/AuthRoutes";
-// import UserRoutes from "./routes/UserRoutes";
+import { UserRoutes } from "./routes/UserRoutes";
+
+
 dotenv.config(); // Initialize the dotenv
 
 class App {
+    private database = new Database();
     private authRoutes = new AuthRoutes();
+    private blogRoutes = new BlogRoutes();
+    private userRoutes = new UserRoutes();
 
     constructor(
         private app: express.Application = express(),
@@ -43,8 +49,8 @@ class App {
         this.app.use(cookieParser())
 
         this.app.use("/api/auth", this.authRoutes.getRouter);
-        // this.app.use("/api/users", UserRoutes);
-        // this.app.use("/api/blogs", BlogRoutes);
+        this.app.use("/api/users",  this.userRoutes.getRouter);
+        this.app.use("/api/blogs", this.blogRoutes.getRouter);
     }
 
     start() {
