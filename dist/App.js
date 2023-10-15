@@ -45,6 +45,10 @@ class App {
             })
         }));
         this.app.use((0, cookie_parser_1.default)());
+        this.app.use("/", (req, res, next) => {
+            res.send("Index page");
+            res.setHeader("Access-Control-Allow-Origin", "https://sketch-cmtry.vercel.app");
+        });
         this.app.use("/api/auth", this.authRoutes.getRouter);
         // this.app.use("/api/users", UserRoutes);
         // this.app.use("/api/blogs", BlogRoutes);
