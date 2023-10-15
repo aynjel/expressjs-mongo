@@ -2,12 +2,16 @@
   "name": "expressjs-mongo",
   "version": "1.0.0",
   "description": "TypeScript",
+<<<<<<< HEAD
   "main": "scr/Server.js",
+=======
+  "main": "./dist/App.js",
+>>>>>>> ad32f13df04f2194f498b17a72c2a809cc669b59
   "scripts": {
     "start": "npm run build && node ./build/Server.ts",
     "dev": "npx nodemon",
     "build": "tsc -p .",
-    "clear-node-port": "taskkill /F /IM node.exe"
+    "cls": "taskkill /F /IM node.exe"
   },
   "keywords": [],
   "author": "",
@@ -19,6 +23,7 @@
     "cors": "^2.8.5",
     "express": "^4.18.2",
     "express-session": "^1.17.3",
+    "express-validator": "^7.0.1",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^7.6.1",
     "morgan": "^1.10.0",
