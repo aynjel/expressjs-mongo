@@ -2,7 +2,7 @@
   "name": "expressjs-mongo",
   "version": "1.0.0",
   "description": "TypeScript",
-  "main": "index.js",
+  "main": "./dist/App.js",
   "scripts": {
     "start": "npm run build && node ./build/App.ts",
     "dev": "npx nodemon",
