@@ -1,7 +1,10 @@
-import * as mongoose from 'mongoose';
-
-export interface IUser extends mongoose.Document{
-    name: string;
+export interface IUser{
+    _id: string;
+    firstName: string;
+    middleName: string;
+    lastName: string;
     email: string;
+    username: string;
+    mobileNumber: string;
     password: string;
 }

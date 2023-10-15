@@ -5,12 +5,14 @@ import cookieParser from "cookie-parser";
 import session from "express-session";
 import MongoStore from "connect-mongo";
 import { Logger } from "./config/Logger";
+import { Database } from "./config/Database";
 // import BlogRoutes from "./routes/BlogRoutes";
 import { AuthRoutes } from "./routes/AuthRoutes";
 // import UserRoutes from "./routes/UserRoutes";
 dotenv.config(); // Initialize the dotenv
 
 class App {
+    private database = new Database();
     private authRoutes = new AuthRoutes();
 
     constructor(
