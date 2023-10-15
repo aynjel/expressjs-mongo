@@ -1,16 +1,16 @@
 import { Request, Response, NextFunction } from 'express';
+import bcryptjs from 'bcryptjs';
+import User from '../models/User';
 
 export class AuthController {
   public register(req: Request, res: Response, next: NextFunction) {
-    // Implement registration logic here
-    const { username, password } = req.body;
-
-    // Example: Save user to database
-    // User.create({ username, password })
-    //   .then(user => res.json(user))
-    //   .catch(error => next(error));
-
-    res.json({ message: 'User registered successfully' });
+    const { name, email, password } = req.body;
+    
+    User.findOne({ where: { email } })
+    .then(user => {
+      console.log(user);
+    })
+    .catch(error => next(error));
   }
 
   public login(req: Request, res: Response, next: NextFunction) {

@@ -1,38 +1,38 @@
 import { Request, Response, NextFunction } from 'express';
-import { TUser } from '../types/Types';
-import User from '../models/User';
+import { TSketch } from '../types/Types';
+import Sketch from '../models/Sketch';
 
-export class UserController {
+export class SketchController {
     public index(req: Request, res: Response, next: NextFunction) {
-        User.find()
-            .then((users: TUser[]) => res.json({ users }))
+        Sketch.find()
+            .then((sketchs: TSketch[]) => res.json({ sketchs }))
             .catch((error: Error) => res.status(500).json({ error }));
     }
 
     public show(req: Request, res: Response, next: NextFunction) {
         const id: string = req.params.id;
-        User.findById(id)
-            .then((user: TUser | null) => res.json({ user }))
+        Sketch.findById(id)
+            .then((sketch: TSketch | any) => res.json({ sketch }))
             .catch((error: Error) => res.status(500).json({ error }));
     }
 
     public create(req: Request, res: Response, next: NextFunction) {
-        const user: TUser = req.body;
-        User.create(user)
-            .then((user: TUser) => res.status(201).json({ user }))
+        const sketch: TSketch = req.body;
+        Sketch.create(sketch)
+            .then((sketch: TSketch) => res.status(201).json({ sketch }))
             .catch((error: Error) => res.status(500).json({ error }));
     }
 
     public update(req: Request, res: Response, next: NextFunction) {
-        const userData: TUser = req.body;
-        User.findByIdAndUpdate(req.params.id, userData)
-            .then((user: TUser | null) => res.json({ user }))
+        const sketchData: TSketch = req.body;
+        Sketch.findByIdAndUpdate(req.params.id, sketchData)
+            .then((sketch: TSketch | any) => res.json({ sketch }))
             .catch((error: Error) => res.status(500).json({ error }));
     }
 
     public destroy(req: Request, res: Response, next: NextFunction) {
-        User.findByIdAndRemove(req.params.id)
-            .then((user: TUser | null) => res.json({ user }))
+        Sketch.findByIdAndRemove(req.params.id)
+            .then((sketch: TSketch | any) => res.json({ sketch }))
             .catch((error: Error) => res.status(500).json({ error }));
     }
 }

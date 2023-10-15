@@ -1,27 +1,24 @@
-import dotenv from "dotenv";
 import express from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import session from "express-session";
-import MongoStore from "connect-mongo";
-import { Database } from "./config/Database";
+import mongoStore from "connect-mongo";
 import { Logger } from "./config/Logger";
-import { BlogRoutes } from "./routes/BlogRoutes";
 import { AuthRoutes } from "./routes/AuthRoutes";
 import { UserRoutes } from "./routes/UserRoutes";
+import { Database } from "./config/Database";
 
 
-dotenv.config(); // Initialize the dotenv
-
-class App {
+export class App {
     private database = new Database();
     private authRoutes = new AuthRoutes();
-    private blogRoutes = new BlogRoutes();
     private userRoutes = new UserRoutes();
 
     constructor(
         private app: express.Application = express(),
     ) {
+
+        this.database.connect();
         
         this.app.use(Logger.accesslogger);
         this.app.use(Logger.errorLogger);
@@ -41,7 +38,7 @@ class App {
                 httpOnly: true,
                 maxAge: 1000 * 60 * 60 * 24 * 7 // 1 week
             },
-            store: MongoStore.create({
+            store: mongoStore.create({
                 mongoUrl: process.env.MONGODB_URI || "",
                 ttl: 60 * 60 * 24 * 7 // 1 week
             })
@@ -50,13 +47,9 @@ class App {
 
         this.app.use("/api/auth", this.authRoutes.getRouter);
         this.app.use("/api/users",  this.userRoutes.getRouter);
-        this.app.use("/api/blogs", this.blogRoutes.getRouter);
     }
 
     start() {
         this.app.listen(process.env.PORT, () => console.log(`Server is running on http://localhost:${process.env.PORT}`));
     }
 }
-
-const app = new App();
-app.start();

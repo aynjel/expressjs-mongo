@@ -2,11 +2,9 @@ import * as mongoose from "mongoose";
 
 export class Database{
     
-    constructor(){
-        this.connect();
-    }
+    constructor(){}
 
-    private async connect(): Promise<void>{
+    public async connect(): Promise<void>{
         try{
             await mongoose.connect(process.env.MONGODB_URI as string)
             .then(() => console.log("Connected to database", process.env.MONGODB_URI))

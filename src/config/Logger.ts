@@ -3,7 +3,6 @@ import fs = require("fs");
 import morgan from "morgan";
 
 export class Logger{
-
     constructor(){ }
 
     public static accesslogger = morgan("combined", {
@@ -18,7 +17,7 @@ export class Logger{
 
     public static consoleLogger = morgan("dev");
 
-    public async log(message: string): Promise<void>{
+    public async info(message: string): Promise<void>{
         console.log(message);
     }
 }
