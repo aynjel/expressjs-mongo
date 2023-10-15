@@ -25,7 +25,8 @@ class App {
         this.app.use(express.json());
         this.app.use(express.urlencoded({ extended: true }));
         this.app.use(cors({
-            origin: ["http://localhost:4200", "http://localhost:8100", "https://sketch-cmtry.vercel.app"],
+            // origin: ["http://localhost:4200", "http://localhost:8100", "https://sketch-cmtry.vercel.app"],
+            origin: "https://sketch-cmtry.vercel.app",
             credentials: true
         }));
         this.app.use(session({
