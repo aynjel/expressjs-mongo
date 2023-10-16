@@ -3,7 +3,6 @@ import mongoose from "mongoose";
 const Schema = mongoose.Schema;
 
 const UserSchema = new Schema({
-    // _id: mongoose.Schema.Types.ObjectId,
     firstName: {
         type: String,
         required: true
@@ -21,13 +20,15 @@ const UserSchema = new Schema({
         required: true,
         unique: true
     },
-<<<<<<< HEAD
-    password: String,
+    password: {
+        type: String,
+        required: true,
+    },
     role: {
         type: String,
         enum: ["user", "staff", "admin"],
         default: "user"
-=======
+    },
     username:{
         type: String,
         required: true,
@@ -37,11 +38,6 @@ const UserSchema = new Schema({
         type: String,
         required: true,
         unique: true
-    },
-    password:{
-        type: String,
-        required: true
->>>>>>> ad32f13df04f2194f498b17a72c2a809cc669b59
     }
 }, {
     timestamps: true
