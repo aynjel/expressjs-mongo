@@ -1,38 +1,68 @@
 import { Request, Response, NextFunction } from 'express';
-import { TUser } from '../types/Types';
+import { TUpdateUser, TUser } from '../types/Types';
 import User from '../models/User';
+import bcryptjs from 'bcryptjs';
+import jwt from 'jsonwebtoken';
 
 export class UserController {
-    public index(req: Request, res: Response, next: NextFunction) {
-        User.find()
-            .then((users: TUser[]) => res.json({ users }))
+    public async index(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
+        await User.find()
+            .then((users: TUser[]) => {
+                if (users.length === 0) return res.status(404).json({ message: "Users not found" });
+                return res.json({users});
+            })
             .catch((error: Error) => res.status(500).json({ error }));
     }
 
-    public show(req: Request, res: Response, next: NextFunction) {
+    public async show(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
         const id: string = req.params.id;
-        User.findById(id)
-            .then((user: TUser | null) => res.json({ user }))
+        await User.findById(id)
+            .then((user: TUser | null) => {
+                if (!user) return res.status(404).json({ message: "User not found" });
+                return res.json({ user });
+            })
             .catch((error: Error) => res.status(500).json({ error }));
     }
 
-    public create(req: Request, res: Response, next: NextFunction) {
-        const user: TUser = req.body;
-        User.create(user)
-            .then((user: TUser) => res.status(201).json({ user }))
-            .catch((error: Error) => res.status(500).json({ error }));
-    }
-
-    public update(req: Request, res: Response, next: NextFunction) {
+    public async create(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
         const userData: TUser = req.body;
-        User.findByIdAndUpdate(req.params.id, userData)
-            .then((user: TUser | null) => res.json({ user }))
+        if (!userData) return res.status(400).json({ message: "User data is required" });
+        const userExists = await User.findOne({ $or: [{ email: userData.email }, { username: userData.username }] });
+        if (userExists) return res.status(400).json({ message: "User already exists" });
+        const hashedPassword = bcryptjs.hashSync(userData.password, 10);
+        userData.password = hashedPassword;
+        await User.create(userData)
+            .then((user: TUser) => {
+                const userWithoutPassword = {
+                    _id: user._id,
+                    firstName: user.firstName,
+                    middleName: user.middleName,
+                    lastName: user.lastName,
+                    email: user.email,
+                    username: user.username,
+                    mobileNumber: user.mobileNumber,
+                    role: user.role
+                };
+                return res.json({ createdUser: userWithoutPassword, message: "User created" });
+            })
             .catch((error: Error) => res.status(500).json({ error }));
     }
 
-    public destroy(req: Request, res: Response, next: NextFunction) {
-        User.findByIdAndRemove(req.params.id)
-            .then((user: TUser | null) => res.json({ user }))
+    public async update(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
+        const userId: string = req.params.id;
+        if (!userId) return res.status(400).json({ message: "User id is required" });
+        const userData: TUpdateUser = req.body;
+        if (!userData) return res.status(400).json({ message: "User data is required" });
+        await User.findByIdAndUpdate(userId, userData, { new: true })
+            .then((user: TUser | null) => res.json({ updatedUser: user, message: "User updated" }))
+            .catch((error: Error) => res.status(500).json({ error }));
+    }
+
+    public async destroy(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
+        const id: string = req.params.id;
+        if (!id) return res.status(400).json({ message: "User id is required" });
+        await User.findByIdAndRemove(id)
+            .then((user: TUser | null) => res.json({ deletedUser: user, message: "User deleted" }))
             .catch((error: Error) => res.status(500).json({ error }));
     }
 }

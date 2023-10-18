@@ -2,11 +2,7 @@
   "name": "expressjs-mongo",
   "version": "1.0.0",
   "description": "TypeScript",
-<<<<<<< HEAD
   "main": "scr/Server.js",
-=======
-  "main": "./dist/App.js",
->>>>>>> ad32f13df04f2194f498b17a72c2a809cc669b59
   "scripts": {
     "start": "npm run build && node ./build/Server.ts",
     "dev": "npx nodemon",
@@ -38,6 +34,7 @@
     "@types/cors": "^2.8.14",
     "@types/express": "^4.17.18",
     "@types/express-session": "^1.17.8",
+    "@types/express-validator": "^3.0.0",
     "@types/jsonwebtoken": "^9.0.3",
     "@types/mongoose": "^5.11.97",
     "@types/morgan": "^1.9.6",

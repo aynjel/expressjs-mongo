@@ -11,7 +11,7 @@ export class UserRoutes extends BaseRoutes {
     }
 
     protected initializeRoutes(): void {
-        this.get('/', this.userController.index);
+        this.get('', this.userController.index);
         this.get('/:id', this.userController.show);
         this.post('/create', this.userController.create);
         this.put('/update/:id', this.userController.update);

@@ -1,9 +1,27 @@
 export type TUser = {
     _id: string;
-    name: string;
+    firstName: string;
+    middleName: string;
+    lastName: string;
     email: string;
+    username: string;
     password: string;
+    mobileNumber: string;
     role: string;
+};
+
+export type TUpdateUser = {
+    firstName: string;
+    middleName: string;
+    lastName: string;
+    email: string;
+    username: string;
+    mobileNumber: string;
+};
+
+export type TChangePassword = {
+    oldPassword: string;
+    newPassword: string;
 };
 
 export type TSketch = {

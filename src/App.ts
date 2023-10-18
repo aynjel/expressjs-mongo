@@ -4,21 +4,11 @@ import cookieParser from "cookie-parser";
 import session from "express-session";
 import mongoStore from "connect-mongo";
 import { Logger } from "./config/Logger";
-<<<<<<< HEAD
-=======
 import { Database } from "./config/Database";
-// import BlogRoutes from "./routes/BlogRoutes";
->>>>>>> ad32f13df04f2194f498b17a72c2a809cc669b59
 import { AuthRoutes } from "./routes/AuthRoutes";
 import { UserRoutes } from "./routes/UserRoutes";
-import { Database } from "./config/Database";
-
-<<<<<<< HEAD
 
 export class App {
-=======
-class App {
->>>>>>> ad32f13df04f2194f498b17a72c2a809cc669b59
     private database = new Database();
     private authRoutes = new AuthRoutes();
     private userRoutes = new UserRoutes();
@@ -35,8 +25,11 @@ class App {
         this.app.use(express.json());
         this.app.use(express.urlencoded({ extended: true }));
         this.app.use(cors({
-            // origin: ["http://localhost:4200", "http://localhost:8100", "https://sketch-cmtry.vercel.app"],
-            origin: "https://sketch-cmtry.vercel.app",
+            origin: [
+                "http://localhost:4200",
+                "http://localhost:8100",
+                "https://sketch-cmtry.vercel.app"
+            ],
             credentials: true
         }));
         this.app.use(session({
@@ -55,12 +48,9 @@ class App {
         }));
         this.app.use(cookieParser())
 
-        this.app.use("/", (req, res, next) => {
-            res.send("Index page");
-            res.setHeader("Access-Control-Allow-Origin", "https://sketch-cmtry.vercel.app");
-        });
+        this.app.get("/", (req, res, next) => res.send("App Index page"));
         this.app.use("/api/auth", this.authRoutes.getRouter);
-        this.app.use("/api/users",  this.userRoutes.getRouter);
+        this.app.use("/api/users", this.userRoutes.getRouter);
     }
 
     start() {

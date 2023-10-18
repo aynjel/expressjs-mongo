@@ -1,18 +1,4 @@
 import { Request, Response, NextFunction } from 'express';
-<<<<<<< HEAD
-import bcryptjs from 'bcryptjs';
-import User from '../models/User';
-
-export class AuthController {
-  public register(req: Request, res: Response, next: NextFunction) {
-    const { name, email, password } = req.body;
-    
-    User.findOne({ where: { email } })
-    .then(user => {
-      console.log(user);
-    })
-    .catch(error => next(error));
-=======
 import User from '../models/User';
 import bcryptjs from 'bcryptjs';
 import jwt from 'jsonwebtoken';
@@ -42,7 +28,6 @@ export class AuthController {
     }catch(error){
       next(error);
     }
->>>>>>> ad32f13df04f2194f498b17a72c2a809cc669b59
   }
 
   public login(req: Request, res: Response, next: NextFunction) {
