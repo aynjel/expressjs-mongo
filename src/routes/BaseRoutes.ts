@@ -22,10 +22,4 @@ export class BaseRoutes {
   protected delete(path: string, callback: (req: Request, res: Response, next: NextFunction) => void, ...middleware: any[]) {
     this.router.delete(path, ...middleware, callback);
   }
-
-  // Add any other HTTP methods you need (e.g., patch, options, etc.)
-
-  public mount(path: string): Router {
-    return this.router;
-  }
 }

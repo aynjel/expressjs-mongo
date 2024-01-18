@@ -16,9 +16,7 @@ export class AuthRoutes extends BaseRoutes {
 
     protected initializeRoutes(): void {
         this.post('/login', this.authController.login);
-        this.post('/register', this.authController.register);
         this.post('/logout', this.authController.logout);
-        this.get('/me', this.authController.me);
     }
 
     public get getRouter(): Router {

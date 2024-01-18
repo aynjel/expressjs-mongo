@@ -26,9 +26,7 @@ export class App {
         this.app.use(express.urlencoded({ extended: true }));
         this.app.use(cors({
             origin: [
-                "http://localhost:4200",
-                "http://localhost:8100",
-                "https://sketch-cmtry.vercel.app"
+                "*"
             ],
             credentials: true
         }));

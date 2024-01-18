@@ -1,17 +1,9 @@
-import { TUser } from './../types/Types';
+import { TUser } from '../types/TUser';
 import mongoose from "mongoose";
 const Schema = mongoose.Schema;
 
 const UserSchema = new Schema({
-    firstName: {
-        type: String,
-        required: true
-    },
-    middleName: {
-        type: String,
-        required: true
-    },
-    lastName: {
+    name: {
         type: String,
         required: true
     },
@@ -19,6 +11,11 @@ const UserSchema = new Schema({
         type: String,
         required: true,
         email: true,
+        unique: true
+    },
+    username:{
+        type: String,
+        required: true,
         unique: true
     },
     password: {
@@ -30,16 +27,6 @@ const UserSchema = new Schema({
         enum: ["user", "staff", "admin"],
         default: "user"
     },
-    username:{
-        type: String,
-        required: true,
-        unique: true
-    },
-    mobileNumber:{
-        type: String,
-        required: true,
-        unique: true
-    }
 }, {
     timestamps: true
 });
