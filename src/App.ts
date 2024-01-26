@@ -12,6 +12,7 @@ export class App {
     private database = new Database();
     private authRoutes = new AuthRoutes();
     private userRoutes = new UserRoutes();
+    private logger = new Logger("app");
 
     constructor(
         private app: express.Application = express(),
@@ -19,9 +20,6 @@ export class App {
 
         this.database.connect();
         
-        this.app.use(Logger.accesslogger);
-        this.app.use(Logger.errorLogger);
-        this.app.use(Logger.consoleLogger);
         this.app.use(express.json());
         this.app.use(express.urlencoded({ extended: true }));
         this.app.use(cors({
@@ -46,12 +44,24 @@ export class App {
         }));
         this.app.use(cookieParser())
 
-        this.app.get("/", (req, res, next) => res.send("App Index page"));
+        this.app.get("/", (req, res, next) => {
+            this.logger.log(`App Index page`); // `App Index page
+            res.send("App Index page");
+        });
         this.app.use("/api/auth", this.authRoutes.getRouter);
         this.app.use("/api/users", this.userRoutes.getRouter);
+
+        this.app.use((req, res, next) => {
+            const error = new Error("Route not found");
+            this.logger.log(`Route not found: ${req.method} ${req.path}`, "error"); // Route not found: GET /api/users
+            res.status(404).json({ message: error.message });
+        });
     }
 
     start() {
-        this.app.listen(process.env.PORT, () => console.log(`Server is running on http://localhost:${process.env.PORT}`));
+        this.app.listen(process.env.PORT, () => {
+            console.log(`Server running on port ${process.env.PORT}`);
+            this.logger.log(`Server running on port ${process.env.PORT}`);
+        });
     }
 }

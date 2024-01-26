@@ -1,23 +1,31 @@
-import path = require("path");
-import fs = require("fs");
-import morgan from "morgan";
+import { Request, Response, NextFunction } from "express";
+import winston from "winston";
+const { combine, timestamp, label, prettyPrint } = winston.format;
 
-export class Logger{
-    constructor(){ }
+export class Logger{  
+    
+    private logger: winston.Logger | any;
 
-    public static accesslogger = morgan("combined", {
-        skip: (req, res) => res.statusCode >= 400,
-        stream: fs.createWriteStream(path.join(__dirname, "./../logs/access.log"), {flags: "a"})
-    });
+    constructor(service = "app"){
+        this.logger = winston.createLogger({
+            level: 'info',
+            format: combine(
+                label({ label: `${service}-log` }),
+                timestamp(),
+                prettyPrint()
+            ),
+            defaultMeta: { service: `${service}-service` },
+            transports: [
+                new winston.transports.File({ filename: 'src/logs/error.log', level: 'error' }),
+                new winston.transports.File({ filename: 'src/logs/combined.log' })
+            ]
+        });
+    }
 
-    public static errorLogger = morgan("combined", {
-        skip: (req, res) => res.statusCode < 400 || res.statusCode >= 500,
-        stream: fs.createWriteStream(path.join(__dirname, "./../logs/error.log"), {flags: "a"})
-    });
-
-    public static consoleLogger = morgan("dev");
-
-    public async info(message: string): Promise<void>{
-        console.log(message);
+    public log(message: string, level: string = "info"){
+        this.logger.log({
+            level: level,
+            message: message
+        });
     }
 }
